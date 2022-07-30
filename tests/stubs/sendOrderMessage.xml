@@ -1,0 +1,65 @@
+<foreignSystemInterface>
+    <security>
+        <username>N872</username>
+        <password>qa</password>
+        <shopCode>N8720000</shopCode>
+    </security>
+    <errors/>
+    <messagesOnOrder>
+        <messageCount>1</messageCount>
+        <messageOrder>
+            <messageType>0</messageType>
+            <sendingShopCode>N8720000</sendingShopCode>
+            <receivingShopCode>N8910000</receivingShopCode>
+            <fulfillingShopCode>N8910000</fulfillingShopCode>
+            <systemType>GENERAL</systemType>
+            <identifiers>
+                <generalIdentifiers>
+                    <bmtOrderNumber/>
+                    <bmtSeqNumberOfOrder/>
+                    <bmtSeqNumberOfMessage/>
+                    <externalShopOrderNumber>10001</externalShopOrderNumber>
+                    <externalShopMessageNumber/>
+                </generalIdentifiers>
+            </identifiers>
+            <messageCreateTimestamp>20100614123400</messageCreateTimestamp>
+            <orderDetails>
+                <orderNumber/>
+                <occasionCode>1</occasionCode>
+                <totalCostOfMerchandise>59.95</totalCostOfMerchandise>
+                <orderProductsInfo>
+                    <orderProductInfoDetails>
+                        <units>1</units>
+                        <costOfSingleProduct>59.95</costOfSingleProduct>
+                        <productDescription>1 dozen roses</productDescription>
+                    </orderProductInfoDetails>
+                </orderProductsInfo>
+                <orderCardMessage>TEST ORDER MESSAGE. ENJOY!</orderCardMessage>
+            </orderDetails>
+            <orderCaptureDate>20100614123400</orderCaptureDate>
+            <deliveryDetails>
+                <deliveryDate>07/08/2022</deliveryDate>
+                <specialInstruction>LEAVE AS A TEST</specialInstruction>
+            </deliveryDetails>
+            <recipient>
+                <recipientFirstName>FIRST</recipientFirstName>
+                <recipientLastName>LAST</recipientLastName>
+                <recipientAttention/>
+                <recipientAddress1>123 Main Street</recipientAddress1>
+                <recipientAddress2/>
+                <recipientCity>ANY TOWN</recipientCity>
+                <recipientState>FL</recipientState>
+                <recipientZipCode>34683</recipientZipCode>
+                <recipientCountryCode>USA</recipientCountryCode>
+                <recipientPhoneNumber>5551231234</recipientPhoneNumber>
+            </recipient>
+            <wireServiceCode>BMT</wireServiceCode>
+            <shippingDetails>
+                <trackingNumber/>
+                <shipperCode/>
+                <shippingMethod/>
+                <shippingDate/>
+            </shippingDetails>
+        </messageOrder>
+    </messagesOnOrder>
+</foreignSystemInterface>
