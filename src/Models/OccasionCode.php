@@ -1,13 +1,31 @@
 <?php namespace BloomNetwork\Models;
 
-enum OccasionCode: int
+use phpDocumentor\Reflection\Types\Static_;
+use Spatie\Enum\Enum;
+
+/**
+ * @method static self Funeral_Memorial()
+ * @method static self Illness()
+ * @method static self Birthday()
+ * @method static self Business()
+ * @method static self Holiday()
+ * @method static self Maternity()
+ * @method static self Anniversary()
+ * @method static self Others
+ */
+class OccasionCode extends Enum
 {
-    case Funeral_Memorial = 1;
-    case Illness = 2;
-    case Birthday = 3;
-    case Business = 4;
-    case Holiday = 5;
-    case Maternity = 6;
-    case Anniversary = 7;
-    case Others = 8;
+    protected static function values(): array
+    {
+        return [
+            'Funeral_Memorial' => 1,
+            'Illness'          => 2,
+            'Birthday'         => 3,
+            'Business'         => 4,
+            'Holiday'          => 5,
+            'Maternity'        => 6,
+            'Anniversary'      => 7,
+            'Others'           => 8,
+        ];
+    }
 }

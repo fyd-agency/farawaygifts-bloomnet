@@ -2,7 +2,9 @@
 
 namespace BloomNetwork\Models;
 
+use Spatie\ArrayToXml\ArrayToXml;
+
 interface XmlFormatter
 {
-    public function toXml(): \DOMDocument;
+    public function xml(): string;
 }

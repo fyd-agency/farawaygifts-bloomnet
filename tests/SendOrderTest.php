@@ -16,7 +16,7 @@ class SendOrderTest extends TestCase
 
     public function testSendingAnOrder()
     {
-        $item = $this->bloom->sendOrder('tests/stubs/sendOrderMessage.xml');
+        $item = $this->bloom->sendOrder('stubs/sendOrderMessage.xml');
 
         dd((string)$item->getBody());
     }

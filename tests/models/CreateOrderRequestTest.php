@@ -35,6 +35,6 @@ class CreateOrderRequestTest extends TestCase
             5.00
         );
 
-        dd($request->toXml()->saveHTML());
+        dd($request->xml()->saveHTML());
     }
 }

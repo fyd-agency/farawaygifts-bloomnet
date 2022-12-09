@@ -44,7 +44,7 @@ class CreateOrderRequest implements XmlFormatter
         $this->recipient            = $recipient;
     }
 
-    public function toXml(): \DOMDocument
+    public function xml(): \DOMDocument
     {
         $xml_data = [
             'messagesOnOrder' => [

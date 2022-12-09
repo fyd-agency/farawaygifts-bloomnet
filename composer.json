@@ -1,18 +1,23 @@
 {
+    "name": "fyd/bloomnet",
     "autoload": {
         "psr-4": {
             "BloomNetwork\\": "src/"
         }
     },
     "require": {
-        "php": "8.1",
+        "php": "^8.0.2",
         "guzzlehttp/guzzle": "^7.4",
-        "illuminate/support": "^9.17",
-        "symfony/var-dumper": "^6.0",
-        "ext-dom": "*"
+        "illuminate/support": "^v8.83.25",
+        "ext-dom": "*",
+        "spatie/enum": "^3.13",
+        "spatie/array-to-xml": "^3.1",
+        "ext-simplexml": "*"
     },
     "require-dev": {
+        "symfony/var-dumper": "^6.0",
         "phpunit/phpunit": "^9.5",
         "phpstan/phpstan": "^1.7"
+
     }
 }
