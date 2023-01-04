@@ -4,6 +4,7 @@ use BloomNetwork\Models\Items\DeliveryDetails;
 use BloomNetwork\Models\Items\OrderProductionInfo;
 use BloomNetwork\Models\Items\Recipient;
 use Carbon\Carbon;
+use Spatie\ArrayToXml\ArrayToXml;
 
 class CreateOrderRequest implements XmlFormatter
 {
@@ -44,9 +45,9 @@ class CreateOrderRequest implements XmlFormatter
         $this->recipient            = $recipient;
     }
 
-    public function xml(): \DOMDocument
+    public function xml(): string
     {
-        $xml_data = [
+        return ArrayToXml::convert([
             'messagesOnOrder' => [
                 'messageCount' => 1,
                 'messageOrder' => [
@@ -100,10 +101,6 @@ class CreateOrderRequest implements XmlFormatter
                     'wireServiceCode'        => 'BMT',
                 ],
             ],
-        ];
-
-        $xml      = new \DOMDocument();
-
-        return $xml;
+        ]);
     }
 }
