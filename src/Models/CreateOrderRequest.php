@@ -32,9 +32,13 @@ class CreateOrderRequest implements XmlFormatter
         DeliveryDetails $deliveryDetails,
         float $totalMerchandiseCost,
         string $orderCardMessage = '',
-        OccasionCode $occasionCode = OccasionCode::Funeral_Memorial,
+        OccasionCode $occasionCode = null,
         Carbon $created_at = null,
     ) {
+        if (is_null($occasionCode)) {
+            $occasionCode = OccasionCode::Funeral_Memorial();
+        }
+
         $this->productDetails       = $productDetails;
         $this->totalMerchandiseCost = $totalMerchandiseCost;
         $this->occasion_code        = $occasionCode;
