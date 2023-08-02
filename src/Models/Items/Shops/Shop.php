@@ -2,8 +2,6 @@
 
 namespace BloomNetwork\Models\Items\Shops;
 
-use phpDocumentor\Reflection\Types\Boolean;
-
 class Shop
 {
     public bool $is_open_sunday;

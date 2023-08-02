@@ -3,7 +3,6 @@
 namespace BloomNetwork\Models;
 
 use BloomNetwork\Exceptions\InvalidResponseException;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Psr7\Response;
 use SimpleXMLElement;
 
@@ -16,7 +15,7 @@ class AbstractResponse
      */
     public function __construct(Response $response)
     {
-        $xml_string = (string)$response->getBody();
+        $xml_string = (string) $response->getBody();
 
         $data = simplexml_load_string($xml_string);
 

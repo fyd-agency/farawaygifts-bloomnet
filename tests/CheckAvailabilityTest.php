@@ -2,8 +2,9 @@
 
 use BloomNetwork\BloomNet;
 use Carbon\Carbon;
+use PHPUnit\Framework\TestCase;
 
-class CheckAvailabilityTest extends \PHPUnit\Framework\TestCase
+class CheckAvailabilityTest extends TestCase
 {
     protected BloomNet $bloom;
 
@@ -19,5 +20,12 @@ class CheckAvailabilityTest extends \PHPUnit\Framework\TestCase
         $response = $this->bloom->isAvaliableForDeliveryOnDateAndZipCode(Carbon::today()->addWeeks(2), '60632');
 
         $this->assertTrue($response);
+    }
+
+    public function testGettingShopCodesByDateAndLocation()
+    {
+        $response = $this->bloom->availableShops(Carbon::today()->addWeeks(2), '60632');
+
+        $this->assertIsString($response);
     }
 }

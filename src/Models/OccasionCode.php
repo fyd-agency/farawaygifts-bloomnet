@@ -1,6 +1,7 @@
-<?php namespace BloomNetwork\Models;
+<?php
 
-use phpDocumentor\Reflection\Types\Static_;
+namespace BloomNetwork\Models;
+
 use Spatie\Enum\Enum;
 
 /**
@@ -19,13 +20,13 @@ class OccasionCode extends Enum
     {
         return [
             'Funeral_Memorial' => 1,
-            'Illness'          => 2,
-            'Birthday'         => 3,
-            'Business'         => 4,
-            'Holiday'          => 5,
-            'Maternity'        => 6,
-            'Anniversary'      => 7,
-            'Others'           => 8,
+            'Illness' => 2,
+            'Birthday' => 3,
+            'Business' => 4,
+            'Holiday' => 5,
+            'Maternity' => 6,
+            'Anniversary' => 7,
+            'Others' => 8,
         ];
     }
 }

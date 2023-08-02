@@ -18,6 +18,6 @@ class SendOrderTest extends TestCase
     {
         $item = $this->bloom->sendOrder('stubs/sendOrderMessage.xml');
 
-        dd((string)$item->getBody());
+        dd((string) $item->getBody());
     }
 }

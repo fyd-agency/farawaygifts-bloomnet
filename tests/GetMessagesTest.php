@@ -18,6 +18,6 @@ class GetMessagesTest extends TestCase
     {
         $item = $this->bloom->retrieveMessages();
 
-        dd((string)$item->getBody());
+        dd((string) $item->getBody());
     }
 }

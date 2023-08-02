@@ -1,23 +1,24 @@
-<?php namespace BloomNetwork;
+<?php
 
+namespace BloomNetwork;
+
+use BloomNetwork\Exceptions\InvalidResponseException;
 use BloomNetwork\Models\CreateOrderRequest;
 use BloomNetwork\Models\Credentials;
 use BloomNetwork\Models\DeliveryDateByLocationRequest;
-use BloomNetwork\Models\IsAvailableByLocationAndDate;
 use BloomNetwork\Models\GetMemberDirectoryRequest;
-use BloomNetwork\Models\Items\Recipient;
+use BloomNetwork\Models\IsAvailableByLocationAndDate;
+use BloomNetwork\Models\Responses\AvailableShopResponse;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class BloomNet
 {
-    private static string $endpoint = "https://qa.bloomlink.net/fsiv2/processor";
+    private static string $endpoint = 'https://qa.bloomlink.net/fsiv2/processor';
 
     //private static $endpoint = "http://www.bloomlink.net/fsiv2/processor";
 
-    /**
-     * @var \GuzzleHttp\Client
-     */
     private Client $http;
 
     private string $username;
@@ -30,7 +31,7 @@ class BloomNet
 
     public function __construct(string $username, string $password, string $shopcode)
     {
-        $this->http     = new Client(
+        $this->http = new Client(
             ['base_uri' => self::$endpoint]
         );
         $this->username = $username;
@@ -96,6 +97,34 @@ class BloomNet
         ]);
 
         $handle = new IsAvailableByLocationAndDate($response);
+
+        return $handle->response();
+    }
+
+    /**
+     * Returns shop codes that are available for delivery on a given date and zip code.
+     *
+     * @throws InvalidResponseException
+     * @throws GuzzleException
+     */
+    public function availableShops(Carbon $delivery_date, string $zip_code): string
+    {
+        $response = $this->http->get('/fsiv2/processor', [
+            'query' => [
+                'func' => 'getMemberDirectory',
+                'data' => (new DeliveryDateByLocationRequest(
+                    new Credentials(
+                        $this->username,
+                        $this->password,
+                        $this->shopcode
+                    ),
+                    $delivery_date,
+                    $zip_code
+                ))->xml(),
+            ],
+        ]);
+
+        $handle = new AvailableShopResponse($response);
 
         return $handle->response();
     }

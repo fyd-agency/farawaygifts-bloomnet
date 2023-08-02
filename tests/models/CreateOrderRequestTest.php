@@ -22,11 +22,11 @@ class CreateOrderRequestTest extends TestCase
                 '555-555-5555'
             ),
             [
-               new OrderProductionInfo(
-                   1,
-                   10.00,
-                   "Lots of Roses"
-               )
+                new OrderProductionInfo(
+                    1,
+                    10.00,
+                    'Lots of Roses'
+                ),
             ],
             new DeliveryDetails(
                 \Carbon\Carbon::today(),

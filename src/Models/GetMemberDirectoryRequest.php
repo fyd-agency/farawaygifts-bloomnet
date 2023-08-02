@@ -19,9 +19,9 @@ class GetMemberDirectoryRequest implements XmlFormatter
             'searchShopRequest' => [
                 'security' => $this->credentials->toArray(),
                 'memberDirectorySearchOptions' => [
-                    'searchAll' => []
-                ]
-            ]
+                    'searchAll' => [],
+                ],
+            ],
         ], 'memberDirectoryInterface');
     }
 }

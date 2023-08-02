@@ -1,4 +1,6 @@
-<?php namespace BloomNetwork\Models\Items;
+<?php
+
+namespace BloomNetwork\Models\Items;
 
 class Recipient
 {

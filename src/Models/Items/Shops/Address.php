@@ -12,8 +12,7 @@ class Address
         public string $state,
         public string $zip,
         public string $country
-    )
-    {
+    ) {
 
     }
 }
