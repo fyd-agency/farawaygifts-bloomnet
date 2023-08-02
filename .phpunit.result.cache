@@ -1,1 +1,0 @@
-{"version":1,"defects":{"SendOrderTest::testSendingAnOrder":4,"CheckAvailabilityTest::testGettingAvailabilityByDateForLocationTest":3,"GetMemberDirectoryTest::testGettingMemberDirectory":5},"times":{"SendOrderTest::testSendingAnOrder":0.011,"CheckAvailabilityTest::testGettingAvailabilityByDateForLocationTest":0.669,"GetMemberDirectoryTest::testGettingMemberDirectory":14.197}}
