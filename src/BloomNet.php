@@ -9,9 +9,12 @@ use BloomNetwork\Models\DeliveryDateByLocationRequest;
 use BloomNetwork\Models\GetMemberDirectoryRequest;
 use BloomNetwork\Models\IsAvailableByLocationAndDate;
 use BloomNetwork\Models\Responses\AvailableShopResponse;
+use BloomNetwork\Models\RetrieveMessagesRequest;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Promise\Utils;
 
 class BloomNet
 {
@@ -60,15 +63,6 @@ class BloomNet
         ]);
     }
 
-    public function retrieveMessages()
-    {
-        return $this->http->get('/', [
-            'query' => [
-                'func' => 'getmessages',
-            ],
-        ]);
-    }
-
     public function sendOrder(CreateOrderRequest $request)
     {
         return $this->http->get('/fsiv2/processor', [
@@ -102,6 +96,37 @@ class BloomNet
     }
 
     /**
+     * @return array{string: bool}
+     *
+     * @throws InvalidResponseException
+     * @throws \Throwable
+     */
+    public function deliveryDatesForZipCode(CarbonPeriod $period, string $zip_code): array
+    {
+        $promises = [];
+        foreach ($period as $date) {
+            $promises[$date->format('Y-m-d')] = $this->http->getAsync('/fsiv2/processor', [
+                'query' => [
+                    'func' => 'getMemberDirectory',
+                    'data' => (new DeliveryDateByLocationRequest(
+                        new Credentials(
+                            $this->username,
+                            $this->password,
+                            $this->shopcode
+                        ),
+                        $date,
+                        $zip_code
+                    ))->xml(),
+                ],
+            ]);
+        }
+
+        $responses = Utils::unwrap($promises);
+
+        return array_map(fn ($response) => (new IsAvailableByLocationAndDate($response))->response(), $responses);
+    }
+
+    /**
      * Returns shop codes that are available for delivery on a given date and zip code.
      *
      * @throws InvalidResponseException
@@ -127,5 +152,23 @@ class BloomNet
         $handle = new AvailableShopResponse($response);
 
         return $handle->response();
+    }
+
+    public function retrieveMessages()
+    {
+        $response = $this->http->get('/fsiv2/processor', [
+            'query' => [
+                'func' => 'getmessages',
+                'data' => (new RetrieveMessagesRequest(
+                    new Credentials(
+                        $this->username,
+                        $this->password,
+                        $this->shopcode
+                    )
+                ))->xml(),
+            ],
+        ]);
+
+        dd($response->getBody()->getContents());
     }
 }

@@ -22,7 +22,7 @@ final class DeliveryDateByLocationRequest implements XmlFormatter
 
     public function xml(): string
     {
-        return ArrayToXml::convert([
+        return str_replace('<?xml version="1.0"?>'.PHP_EOL, '', ArrayToXml::convert([
             'searchShopRequest' => [
                 'security' => [
                     'username' => $this->credentials->getUsername(),
@@ -30,12 +30,16 @@ final class DeliveryDateByLocationRequest implements XmlFormatter
                     'shopCode' => $this->credentials->getShopCode(),
                 ],
                 'memberDirectorySearchOptions' => [
-                    'searchAvailability' => [
-                        'deliveryDate' => $this->delivery_date->format('m/d/Y'),
+                    //                    'searchAvailability' => [
+                    //                        'deliveryDate' => $this->delivery_date->format('m/d/Y'),
+                    //                        'zipCode' => $this->zip_code,
+                    //                    ],
+                    'searchShopCodesByAvailabilityDate' => [
+                        'availabilityDate' => $this->delivery_date->format('m/d/Y'),
                         'zipCode' => $this->zip_code,
                     ],
                 ],
             ],
-        ], 'memberDirectoryInterface');
+        ], 'memberDirectoryInterface'));
     }
 }

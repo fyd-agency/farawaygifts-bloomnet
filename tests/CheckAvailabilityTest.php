@@ -2,6 +2,7 @@
 
 use BloomNetwork\BloomNet;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use PHPUnit\Framework\TestCase;
 
 class CheckAvailabilityTest extends TestCase
@@ -22,10 +23,42 @@ class CheckAvailabilityTest extends TestCase
         $this->assertTrue($response);
     }
 
+    public function testGettingAvailabilityByDateForInvalidLocationTest()
+    {
+        $response = $this->bloom->isAvaliableForDeliveryOnDateAndZipCode(Carbon::today()->addWeeks(2), 'IMINHELL');
+
+        $this->assertFalse($response);
+    }
+
     public function testGettingShopCodesByDateAndLocation()
     {
         $response = $this->bloom->availableShops(Carbon::today()->addWeeks(2), '60632');
 
         $this->assertIsString($response);
+    }
+
+    public function testDeliveryDatesForZipCode()
+    {
+        $zipCode = '12345';
+        $startDate = Carbon::now()->addMonth();
+        $endDate = Carbon::now()->addMonth()->addWeeks(4);
+        $period = new CarbonPeriod($startDate, $endDate);
+
+        $results = $this->bloom->deliveryDatesForZipCode($period, $zipCode);
+        $dates = collect($period->toArray())->map(fn ($date) => $date->format('Y-m-d'))->all();
+
+        // Create an associative array to keep track of which dates have results
+        $dateResults = array_fill_keys($dates, false);
+
+        // Iterate over the results and mark the dates that have results
+        foreach ($results as $dateString => $isAvailable) {
+            // Mark the date as having a result
+            $dateResults[$dateString] = true;
+        }
+
+        // Check that all dates have results (i.e., are marked as true in $dateResults)
+        foreach ($dateResults as $dateString => $hasResult) {
+            $this->assertTrue($hasResult, "No result for date: $dateString");
+        }
     }
 }
