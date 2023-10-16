@@ -18,9 +18,9 @@ use GuzzleHttp\Promise\Utils;
 
 class BloomNet
 {
-    private static string $endpoint = 'https://qa.bloomlink.net/fsiv2/processor';
+    private static string $test_endpoint = 'https://qa.bloomlink.net/fsiv2/processor';
 
-    //private static $endpoint = "http://www.bloomlink.net/fsiv2/processor";
+    private static $prod_endpoint = "http://www.bloomlink.net/fsiv2/processor";
 
     private Client $http;
 
@@ -32,10 +32,10 @@ class BloomNet
 
     private Credentials $credentials;
 
-    public function __construct(string $username, string $password, string $shopcode)
+    public function __construct(string $username, string $password, string $shopcode, bool $isProduction = false)
     {
         $this->http = new Client(
-            ['base_uri' => self::$endpoint]
+            ['base_uri' => $isProduction ? self::$prod_endpoint : self::$test_endpoint]
         );
         $this->username = $username;
         $this->password = $password;
@@ -120,6 +120,7 @@ class BloomNet
                 ],
             ]);
         }
+
 
         $responses = Utils::unwrap($promises);
 

@@ -8,7 +8,7 @@
     "require": {
         "php": "^8.0.2",
         "guzzlehttp/guzzle": "^7.4",
-        "illuminate/support": "^v8.83.25",
+        "illuminate/support": "^v8.83.25|v9.52.15",
         "ext-dom": "*",
         "spatie/enum": "^3.13",
         "spatie/array-to-xml": "^3.1",
