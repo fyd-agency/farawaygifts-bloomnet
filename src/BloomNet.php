@@ -15,6 +15,8 @@ use Carbon\CarbonPeriod;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Promise\Utils;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class BloomNet
 {
@@ -32,7 +34,9 @@ class BloomNet
 
     private Credentials $credentials;
 
-    public function __construct(string $username, string $password, string $shopcode, bool $isProduction = false)
+    private LoggerInterface $logger;
+
+    public function __construct(string $username, string $password, string $shopcode, bool $isProduction = false, LoggerInterface $logger = null)
     {
         $this->http = new Client(
             ['base_uri' => $isProduction ? self::$prod_endpoint : self::$test_endpoint]
@@ -46,6 +50,8 @@ class BloomNet
             $this->password,
             $this->shopcode,
         );
+
+        $this->logger = $logger ?? new NullLogger();
     }
 
     protected function request()
@@ -160,6 +166,7 @@ class BloomNet
         $response = $this->http->get('/fsiv2/processor', [
             'query' => [
                 'func' => 'getmessages',
+                'messageAckn' => 'true',
                 'data' => (new RetrieveMessagesRequest(
                     new Credentials(
                         $this->username,
@@ -171,5 +178,35 @@ class BloomNet
         ]);
 
         dd($response->getBody()->getContents());
+    }
+
+    public function retrieveRawMessages()
+    {
+        $response = $this->http->get('/fsiv2/processor', [
+            'query' => [
+                'func' => 'getmessages',
+                'messageAckn' => 'true',
+                'data' => (new RetrieveMessagesRequest(
+                    new Credentials(
+                        $this->username,
+                        $this->password,
+                        $this->shopcode
+                    )
+                ))->xml(),
+            ],
+        ]);
+
+        $xml_string = (string) $response->getBody();
+
+        $this->logger->info("Raw XML Response", [
+            'xml' => $xml_string,
+        ]);
+
+        $data = simplexml_load_string($xml_string);
+        if ($data === false) {
+            throw new InvalidResponseException();
+        }
+
+        return $data;
     }
 }
