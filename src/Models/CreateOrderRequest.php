@@ -24,14 +24,18 @@ class CreateOrderRequest implements XmlFormatter
     protected DeliveryDetails $deliveryDetails;
 
     protected Recipient $recipient;
+    protected Credentials $credentials;
+    private string $orderNumber;
 
     /**
      * @param  OrderProductionInfo[]  $productDetails
      */
     public function __construct(
+        Credentials $credentials,
         Recipient $recipient,
         array $productDetails,
         DeliveryDetails $deliveryDetails,
+        string $orderNumber,
         float $totalMerchandiseCost,
         string $orderCardMessage = '',
         OccasionCode $occasionCode = null,
@@ -40,7 +44,7 @@ class CreateOrderRequest implements XmlFormatter
         if (is_null($occasionCode)) {
             $occasionCode = OccasionCode::Funeral_Memorial();
         }
-
+        $this->credentials = $credentials;
         $this->productDetails = $productDetails;
         $this->totalMerchandiseCost = $totalMerchandiseCost;
         $this->occasion_code = $occasionCode;
@@ -49,25 +53,31 @@ class CreateOrderRequest implements XmlFormatter
         $this->productDetails = $productDetails;
         $this->deliveryDetails = $deliveryDetails;
         $this->recipient = $recipient;
+        $this->orderNumber = $orderNumber;
     }
 
     public function xml(): string
     {
         return ArrayToXml::convert([
+            'security' => [
+                'username' => $this->credentials->getUsername(),
+                'password' => $this->credentials->getPassword(),
+                'shopCode' => $this->credentials->getShopCode(),
+            ],
             'messagesOnOrder' => [
                 'messageCount' => 1,
                 'messageOrder' => [
                     'messageType' => 0,
-                    'sendingShopCode' => '',
-                    'receivingShopCode' => '',
-                    'fulfillingShopCode' => '',
+                    'sendingShopCode' => $this->credentials->getShopCode(),
+                    'receivingShopCode' => 'Z9990000',
+                    'fulfillingShopCode' => 'Z9990000',
                     'systemType' => 'GENERAL',
                     'identifiers' => [
                         'generalIdentifiers' => [
                             'bmtOrderNumber' => null,
                             'bmtSeqNumberOfOrder' => null,
                             'bmtSeqNumberOfMessage' => null,
-                            'externalShopOrderNumber' => 1000, // TODO
+                            'externalShopOrderNumber' => $this->orderNumber,
                             'externalShopMessageNumber' => null,
                         ],
                     ],

@@ -8,13 +8,17 @@ use BloomNetwork\Models\Credentials;
 use BloomNetwork\Models\DeliveryDateByLocationRequest;
 use BloomNetwork\Models\GetMemberDirectoryRequest;
 use BloomNetwork\Models\IsAvailableByLocationAndDate;
+use BloomNetwork\Models\Items\Recipient;
+use BloomNetwork\Models\OccasionCode;
 use BloomNetwork\Models\Responses\AvailableShopResponse;
 use BloomNetwork\Models\RetrieveMessagesRequest;
+use BloomNetwork\Models\Items\DeliveryDetails;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Promise\Utils;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -69,12 +73,42 @@ class BloomNet
         ]);
     }
 
-    public function sendOrder(CreateOrderRequest $request)
+    /**
+     * @param Recipient $recipient
+     * @param array $productDetails
+     * @param DeliveryDetails $deliveryDetails
+     * @param float $totalMerchandiseCost
+     * @param string $orderCardMessage
+     * @param OccasionCode|null $occasionCode
+     * @param Carbon|null $created_at
+     * @return ResponseInterface
+     * @throws GuzzleException
+     */
+    public function sendOrder(
+        Recipient $recipient,
+        array $productDetails,
+        DeliveryDetails $deliveryDetails,
+        string $orderNumber,
+        float $totalMerchandiseCost,
+        string $orderCardMessage = '',
+        OccasionCode $occasionCode = null,
+        Carbon $created_at = null,
+    )
     {
         return $this->http->get('/fsiv2/processor', [
             'query' => [
                 'func' => 'postmessages',
-                'data' => $request,
+                'data' => (new CreateOrderRequest(
+                    $this->credentials,
+                    $recipient,
+                    $productDetails,
+                    $deliveryDetails,
+                    $orderNumber,
+                    $totalMerchandiseCost,
+                    $orderCardMessage,
+                    $occasionCode,
+                    $created_at
+                ))->xml(),
             ],
         ]);
     }
