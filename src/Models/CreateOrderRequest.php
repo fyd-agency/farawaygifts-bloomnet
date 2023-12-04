@@ -69,8 +69,8 @@ class CreateOrderRequest implements XmlFormatter
                 'messageOrder' => [
                     'messageType' => 0,
                     'sendingShopCode' => $this->credentials->getShopCode(),
-                    'receivingShopCode' => 'Z9990000',
-                    'fulfillingShopCode' => 'Z9990000',
+                    'receivingShopCode' => 'Z9980000',
+                    'fulfillingShopCode' => 'Z9980000',
                     'systemType' => 'GENERAL',
                     'identifiers' => [
                         'generalIdentifiers' => [
